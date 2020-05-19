@@ -1,0 +1,40 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+
+<h1 id="blogtitle" class="font-weight-bold text-center">This is BLOG site</h1>
+<br/>
+<!-- here we use the variable from views.py just like 'blogs' -->
+<!-- 'pluralize' is used if we want to check if the variable is 'singular' or 'plural' so we can write 'post' or 'posts' -->
+<!-- .count in this case is a built-in method and not an part of blogs object-->
+
+<h3 class="text-center mb-5">I have written for You {{ blog_count }} post{{ blogs.count|pluralize }} in this blog page</h3>
+<br/>
+<h3 class="text-center">Here is newest {{ blogs.count }} of them: </h3>
+
+{% for blog in blogs %}
+    <div>
+
+        <!-- detail is the def detail (from views) run by blog (variable from urls)       -->
+        <!-- because it is a good practice to name app : app_name = 'blog'       -->
+<div class="row justify-content-center my-3 text-center">
+  <div class="col-md-10">
+              <p>---------------------------------------------------------------------</p>
+        <a href="{% url 'blog:detail' blog.id %}"><h3>{{ blog.title }}</h3></a>
+        <p>{{ blog.author }}</p>
+        <!--    we can specify how many letter we want to see before we see ...    -->
+        <!--    if we add 'safe' we can write to the blog stuf like <b>hell</b> and it will return bolded text    -->
+        <!--    if we don;t ever want to see html tags we apply 'strip' instead of 'safe'    -->
+        <p>{{ blog.content|safe|truncatechars:15 }}</p>
+
+        <!-- we can setup dateformat  -->
+        <!-- we can do it without the '|upper' or even without the year 'd M' or like this 'M d Y'      -->
+
+        <h4>{{ blog.date|date:'d M Y'|upper }}</h4>
+        <p>---------------------------------------------------------------------</p>
+        </div>
+</div>
+    </div>
+{% endfor %}
+
+{% endblock %}
